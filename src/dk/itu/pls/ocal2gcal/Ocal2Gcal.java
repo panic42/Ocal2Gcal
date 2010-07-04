@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
@@ -26,6 +27,15 @@ public class Ocal2Gcal {
    * @param args
    */
   public static void main (String [] args) {
+    try {
+      final InputStream propertiesStream =
+        Ocal2Gcal.class.getResourceAsStream ("/logging.properties");
+      if (propertiesStream != null)
+        LogManager.getLogManager ().
+          readConfiguration (propertiesStream);
+    } catch (Exception e) {
+      log.throwing (Ocal2Gcal.class.getName (), "main", e);
+    }
     if (args.length > 0) {
       String inFilename = args [0];
       try {
