@@ -135,7 +135,7 @@ public class Ocal {
           if (Api.getStatusCode (e.getStatus ()) == Api.CSDK_STAT_DATA_UID_NOTFOUND) {
             // 3b: Create new event in calendar server
             log.finer ("Creating event " + uid);
-            csdkCreateEvent (session, event);
+            csdkCreateEvent (session, calendar);
           } else
             log.throwing (
               Ocal.class.getName (),
@@ -225,8 +225,16 @@ public class Ocal {
     return result;
   }
   
-  void csdkCreateEvent (Session session, VEvent event) {
-    // TODO!!!
+  void csdkCreateEvent (Session session, Calendar calendar) {
+    RequestResult requestResult = new RequestResult ();
+    try {
+      final String calendarStr = calendar.toString ();
+      log.finer ("Creating \n" + calendarStr);
+      session.storeEvents (
+        Api.CSDK_FLAG_STORE_CREATE, calendarStr, requestResult);
+    } catch (StatusException e) {
+      log.throwing (Ocal.class.getName (), "csdkCreateEvent", e);
+    }
   }
   
   void createEvent (Calendarlet cws, VEvent event) {
