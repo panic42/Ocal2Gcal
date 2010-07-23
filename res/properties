@@ -1,0 +1,12 @@
+// Host name of the SQL server
+ocal2gcal.sql.server = localhost
+//ocal2gcal.sql.server = blackmagic.propscs.dk
+
+// User ID to access the SQL server
+//ocal2gcal.sql.userid = ocal2gcal
+
+// User password to access the SQL server
+//ocal2gcal.sql.password =
+
+// Name of the database containing OCal2GCal data
+//ocal2gcal.sql.database = OCal2GCal

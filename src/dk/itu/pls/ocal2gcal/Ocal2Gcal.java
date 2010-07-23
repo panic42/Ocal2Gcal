@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
 
 /**
  * @author panic
@@ -45,6 +46,15 @@ public class Ocal2Gcal {
         log.warning ("Cannot open file '" + inFilename + "', using stdin.");
       }
     }
+    String sqlServerId = Settings.sqlServer;
+    String sqlDatabase = Settings.sqlDatabase;
+    String sqlUserId = Settings.sqlUserId;
+    String sqlPasswd = Settings.sqlPasswd;
+    Database database =
+      new Database (sqlServerId, sqlDatabase, sqlUserId, sqlPasswd);
+    
+    Ocal ocal = new Ocal (database);
+    
     CalendarBuilder builder = new CalendarBuilder ();
     try {
       // Fetch the calendar entry from STDIN
@@ -57,7 +67,7 @@ public class Ocal2Gcal {
       Calendar calendar = builder.build (calendarInputStream);
       log.fine (calendar.toString ());
       // Apply the calendar entry to the appropriate Oracle calendar
-      //Ocal.handle (attendeeId, userId, serverId, calendar);
+      ocal.handle (attendeeId, userId, serverId, calendar);
     } catch (IOException e) {
       log.throwing (Ocal2Gcal.class.getName (), "main", e);
     } catch (ParserException e) {
